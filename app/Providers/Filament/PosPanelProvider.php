@@ -61,7 +61,7 @@ class PosPanelProvider extends PanelProvider
                     ->url('/pos/transactions')
                     ->icon('heroicon-o-presentation-chart-line')
                     ->isActiveWhen(fn () => request()->routeIs('filament.pos.resources.transactions.index'))
-                    ->sort(3s),
+                    ->sort(3),
                 // NavigationItem::make('dashboard')
                 //     ->label(fn (): string => __('filament-panels::pages/dashboard.title'))
                 //     ->url(fn (): string => Dashboard::getUrl())
