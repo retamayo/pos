@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Resources\TransactionResource\Pages\CreateTransaction as CashierPage;
+use App\Filament\Widgets\StatsOverview;
 
 class PosPanelProvider extends PanelProvider
 {
@@ -55,18 +56,14 @@ class PosPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                StatsOverview::class,
             ])
             ->navigationItems([
-                NavigationItem::make('Transactions')
+                NavigationItem::make('Sales')
                     ->url('/pos/transactions')
                     ->icon('heroicon-o-presentation-chart-line')
                     ->isActiveWhen(fn () => request()->routeIs('filament.pos.resources.transactions.index'))
                     ->sort(3),
-                // NavigationItem::make('dashboard')
-                //     ->label(fn (): string => __('filament-panels::pages/dashboard.title'))
-                //     ->url(fn (): string => Dashboard::getUrl())
-                //     
-                // ...
             ])
             ->middleware([
                 EncryptCookies::class,

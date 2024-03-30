@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->longtext('products');
+            $table->json('products');
+            $table->integer('products_sold')->default(0);
             $table->string('total');
             $table->timestamp('transaction_date');
             $table->timestamps();

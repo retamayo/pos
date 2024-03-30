@@ -19,7 +19,7 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function form(Form $form): Form
     {
@@ -59,15 +59,16 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->sortable()
-                    ->label('Price (PHP)')
-                    ->state(function (Product $record): float {
-                        return  number_format($record->price, 2);
-                    }),
                 Tables\Columns\TextColumn::make('stock')
                     ->state(function (Product $record): string {
-                        return Inventory::where('product_id', $record->id)->first()->sum('stock');
+                        return number_format(Inventory::where('product_id', $record->id)->first()->stock);
+                    }),
+                Tables\Columns\TextColumn::make('price')
+                    ->sortable()
+                    ->label('Price')
+                    ->currency('PHP')
+                    ->state(function (Product $record): float {
+                        return  number_format($record->price, 2);
                     }),
                 Tables\Columns\TextColumn::make('category.name')
                     ->sortable()

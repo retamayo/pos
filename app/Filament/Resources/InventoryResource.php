@@ -18,7 +18,9 @@ class InventoryResource extends Resource
 {
     protected static ?string $model = Inventory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
+
+    public static ?string $navigationLabel = 'Inventory';
 
     public static function form(Form $form): Form
     {
@@ -45,7 +47,8 @@ class InventoryResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('product.price')
                     ->sortable()
-                    ->label('Price (PHP)')
+                    ->label('Price')
+                    ->currency('PHP')
                     ->state(function (Inventory $record): float {
                         return  number_format(Product::find($record->product_id)->price, 2);
                     }),

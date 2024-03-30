@@ -30,6 +30,7 @@ class CategoryResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                     Forms\Components\TextArea::make('description')
+                    ->required()
                     ->columnSpanFull(),
                 ]),
             ]);

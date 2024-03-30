@@ -22,7 +22,7 @@ class EditProduct extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $data['stock'] = Inventory::where('product_id', $data['id'])->first()->sum('stock');
+        $data['stock'] = Inventory::where('product_id', $data['id'])->first()->stock;
     
         return $data;
     }
