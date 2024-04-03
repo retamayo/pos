@@ -14,14 +14,17 @@ class Transaction extends Model
     protected $primaryKey = 'id';
 
     protected $casts = [
-        'products' => 'array',
         'transaction_date' => 'datetime',
     ];
 
     protected $fillable = [
-        'products',
-        'products_sold',
+        'user_id',
+        'subtotal',
+        'tax',
+        'discount',
         'total',
+        'paid',
+        'change',
         'transaction_date',
     ];
 }

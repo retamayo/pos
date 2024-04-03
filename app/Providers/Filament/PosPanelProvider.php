@@ -21,6 +21,10 @@ use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Resources\TransactionResource\Pages\CreateTransaction as CashierPage;
 use App\Filament\Widgets\StatsOverview;
+use App\Filament\Widgets\MonthlySalesChart;
+use App\Filament\Widgets\WeeklySalesChart;
+
+
 
 class PosPanelProvider extends PanelProvider
 {
@@ -40,7 +44,6 @@ class PosPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
-                CashierPage::class,
             ])
             ->plugins([
                 BreezyCore::make()
@@ -54,16 +57,18 @@ class PosPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
-                StatsOverview::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
+                WeeklySalesChart::class,
+                MonthlySalesChart::class,
+                StatsOverview::class,   
             ])
             ->navigationItems([
-                NavigationItem::make('Sales')
-                    ->url('/pos/transactions')
-                    ->icon('heroicon-o-presentation-chart-line')
-                    ->isActiveWhen(fn () => request()->routeIs('filament.pos.resources.transactions.index'))
-                    ->sort(3),
+                // NavigationItem::make('Sales')
+                //     ->url('/pos/transactions')
+                //     ->icon('heroicon-o-presentation-chart-line')
+                //     ->isActiveWhen(fn () => request()->routeIs('filament.pos.resources.transactions.index'))
+                //     ->sort(3),
             ])
             ->middleware([
                 EncryptCookies::class,
