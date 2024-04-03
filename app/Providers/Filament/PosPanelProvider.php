@@ -23,6 +23,8 @@ use App\Filament\Resources\TransactionResource\Pages\CreateTransaction as Cashie
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\MonthlySalesChart;
 use App\Filament\Widgets\WeeklySalesChart;
+use App\Filament\Pages\Cashier;
+use App\Filament\Pages\Sales;
 
 
 
@@ -44,6 +46,8 @@ class PosPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
+                Cashier::class,
+                Sales::class,
             ])
             ->plugins([
                 BreezyCore::make()

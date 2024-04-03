@@ -18,7 +18,6 @@ class Transaction extends Model
     ];
 
     protected $fillable = [
-        'user_id',
         'subtotal',
         'tax',
         'discount',
@@ -27,4 +26,8 @@ class Transaction extends Model
         'change',
         'transaction_date',
     ];
+
+    public function items() {
+        return $this->hasMany(Item::class);
+    }
 }

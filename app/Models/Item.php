@@ -17,5 +17,16 @@ class Item extends Model
         'transaction_id',
         'product_id',
         'quantity',
+        'item_total',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
 }
