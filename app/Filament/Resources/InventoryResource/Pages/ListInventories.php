@@ -10,6 +10,11 @@ class ListInventories extends ListRecords
 {
     protected static string $resource = InventoryResource::class;
 
+    public function getHeading(): string|\Illuminate\Contracts\Support\Htmlable
+    {
+        return 'Inventory';
+    }
+
     protected function getHeaderActions(): array
     {
         return [

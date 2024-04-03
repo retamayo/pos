@@ -74,22 +74,19 @@ class MonthlySalesChart extends ChartWidget
                 '12' => 0
             ];
 
-            $transactions = Transaction::select('total', DB::raw('strftime("%m", created_at) as month_number'))
-                ->groupBy(DB::raw('strftime("%m", created_at)')) 
+            foreach ($monthlySales as $month => &$sales) {
+                $currentMonth = $month;
+                $transactions = Transaction::select('total')
+                ->whereMonth('created_at', $currentMonth)
                 ->get();
-        
-            foreach ($transactions as $transaction) {
-                $monthNumber = getMonthNumber($transaction->created_at);
-                $monthlySales[$monthNumber] = isset($monthlySales[$monthNumber]) ? $monthlySales[$monthNumber] + $transaction->total : $transaction->total;
+                $sales = $transactions->sum('total');
             }
-
-           
 
             return $monthlySales;
         }
 
         $monthlySales = calculateMonthlySales();
-
+        
         return [
             'labels' => convertMonthNumberToMonthName(array_keys($monthlySales)),
             'datasets' => [

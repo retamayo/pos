@@ -22,6 +22,12 @@ class InventoryResource extends Resource
 
     public static ?string $navigationLabel = 'Inventory';
 
+    public function getHeader(): string
+    {
+        return 'Inventory';
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -102,5 +108,10 @@ class InventoryResource extends Resource
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function getBreadcrumb(): string
+    {
+        return 'Inventory';
     }
 }

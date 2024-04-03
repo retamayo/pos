@@ -29,7 +29,7 @@ class ListTransactions extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(Transaction::query())
+            ->query(Transaction::query()->where('subtotal', '>', 0))
             ->columns([
                 TextColumn::make('transaction_date')
                     ->formatStateUsing(fn ($state) => date('F j, Y | g:i A', strtotime($state)))

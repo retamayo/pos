@@ -20,46 +20,69 @@ class WeeklySalesChart extends ChartWidget
             return Carbon::parse($date)->format('w'); // Use 'w' for day of week (0-6)
         }
     
-        function convertDayNumberToDayString($dayNumbers)
+        function convertDayNumberToDayName($dayNumbers)
         {
-            $dayStrings = [];
-            $days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
+            $dayNames = [];
+
             foreach ($dayNumbers as $day) {
-                $dayStrings[] = $days[$day];
+                switch ($day) {
+                case '01':
+                    $dayNames[] = 'Mon';
+                    break;
+                case '02':
+                    $dayNames[] = 'Tue';
+                    break;
+                case '03':
+                    $dayNames[] = 'Wed';
+                    break;
+                case '04':
+                    $dayNames[] = 'Thu';
+                    break;
+                case '05':
+                    $dayNames[] = 'Fri';
+                    break;
+                case '06':
+                    $dayNames[] = 'Sat';
+                    break;
+                case '07':
+                    $dayNames[] = 'Sun';
+                    break;
+                default:
+                    $dayNames[] = 'Unknown';
+                }
             }
-    
-            return $dayStrings;
+
+            return $dayNames;
         }
     
         function calculateDailySales()
         {
-            $dailySales = [];
-    
-            // Adjust query to group by day of week
-            $transactions = Transaction::select('total', DB::raw('strftime("%w", created_at) as day_number'))
-                ->groupBy(DB::raw('strftime("%w", created_at)'))
-                ->get();
-    
-            foreach ($transactions as $transaction) {
-                $dayNumber = getDayNumber($transaction->created_at);
-                $dailySales[$dayNumber] = isset($dailySales[$dayNumber]) ? $dailySales[$dayNumber] + $transaction->total : $transaction->total;
+            $dailySales = [
+                '01' => 0,
+                '02' => 0,
+                '03' => 0,
+                '04' => 0,
+                '05' => 0,
+                '06' => 0,
+                '07' => 0,
+            ];
+            
+            foreach ($dailySales as $day => &$sales) {
+                $currentDay = $day;
+                $transactions = Transaction::select('total')
+                  ->whereDay('created_at', $day) // Filter by day number
+                  ->whereMonth('created_at', Carbon::now()->format('m')) // Filter for current month
+                  ->get();
+                $dailySales[$currentDay] = $transactions->sum('total'); // Store sales for the day name
             }
-    
-            // Handle missing days (if no transactions on a specific day)
-            for ($day = 0; $day < 7; $day++) {
-                if (!isset($dailySales[$day])) {
-                    $dailySales[$day] = 0;
-                }
-            }
-    
+            
             return $dailySales;
         }
     
         $dailySales = calculateDailySales();
     
         return [
-            'labels' => convertDayNumberToDayString(array_keys($dailySales)),
+            'labels' => convertDayNumberToDayName(array_keys($dailySales)),
             'datasets' => [
                 [
                     'label' => 'Sales',
