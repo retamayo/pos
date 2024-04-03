@@ -221,6 +221,10 @@ class CreateTransaction extends Component implements HasForms
                                 $items = Item::where('transaction_id', $this->currentId)->get();
 
                                 foreach ($items as $item) {
+                                    $product = Product::find($item->product_id);
+                                    $product->sale_count += $item->quantity;
+                                    $product->save();
+                                    
                                     $productId = $item->product_id;
                                     $inventory = Inventory::where('product_id', $productId)->first();
                                 

@@ -6,6 +6,7 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\Item;
 
 class StatsOverview extends BaseWidget
 {
@@ -15,8 +16,8 @@ class StatsOverview extends BaseWidget
         $best_product_name = $best_product ? $best_product->name : 'No product sold yet';
         $best_product_sale_count = $best_product ? "Sold $best_product->sale_count times" : "Sold 0 times";
 
-        $total_products_sold_today = Transaction::whereDate('created_at', today())->sum('products_sold');
-        $total_products_sold_yesterday = Transaction::whereDate('created_at', today()->subDay())->sum('products_sold');
+        $total_products_sold_today = Item::whereDate('created_at', today())->sum('quantity');
+        $total_products_sold_yesterday = Item::whereDate('created_at', today()->subDay())->sum('quantity');
         $total_products_sold_comparison = number_format($total_products_sold_today - $total_products_sold_yesterday);
         $total_products_description = $total_products_sold_comparison > 0 ? "$total_products_sold_comparison increase since yesterday" : "$total_products_sold_comparison decrease since yesterday";
         $total_products_icon = $total_products_sold_today > $total_products_sold_yesterday ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down';
