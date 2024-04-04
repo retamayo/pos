@@ -224,12 +224,17 @@ class CreateTransaction extends Component implements HasForms
                                     $product = Product::find($item->product_id);
                                     $product->sale_count += $item->quantity;
                                     $product->save();
-                                    
+
                                     $productId = $item->product_id;
                                     $inventory = Inventory::where('product_id', $productId)->first();
                                 
                                     if ($inventory) {
-                                        $inventory->stock -= $item->quantity;
+                                        
+                                        if ($inventory->stock > $item->quantity) {
+                                            $inventory->stock -= $item->quantity;
+                                        } else {
+                                            $inventory->stock = 0;
+                                        }
                                         $inventory->save();
                                     }
                                 }

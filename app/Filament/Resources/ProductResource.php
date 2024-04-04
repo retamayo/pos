@@ -10,10 +10,12 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Category;
 use App\Models\Inventory;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductResource extends Resource
 {
@@ -75,7 +77,9 @@ class ProductResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('category_id')
+                    ->label('Category')
+                    ->options(Category::all()->pluck('name','id'))
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

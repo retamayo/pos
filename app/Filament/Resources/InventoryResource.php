@@ -10,9 +10,13 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\Product;
+use App\Models\Category;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\CheckboxList;
+use Illuminate\Database\Eloquent\Builder;
 
 class InventoryResource extends Resource
 {
@@ -27,6 +31,7 @@ class InventoryResource extends Resource
         return 'Inventory';
     }
 
+  
 
     public static function form(Form $form): Form
     {
@@ -41,7 +46,7 @@ class InventoryResource extends Resource
     }
 
     public static function table(Table $table): Table
-    {
+    {   
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
@@ -63,7 +68,17 @@ class InventoryResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Filter::make('stock1')
+                    ->label('In Stock')
+                    ->query(fn (Builder $query): Builder => $query->where('stock', '>', 0)),
+
+                Filter::make('stock2')
+                    ->label('Low Stock')
+                    ->query(fn (Builder $query): Builder => $query->where('stock', '<', 10)),
+
+                Filter::make('stock3')
+                    ->label('Out of Stock')
+                    ->query(fn (Builder $query): Builder => $query->where('stock', '<=', 0)),
             ])
             ->actions([
                 Tables\Actions\Action::make('Edit')
@@ -84,9 +99,22 @@ class InventoryResource extends Resource
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
+                //     Tables\Actions\Action::make('Generate'),
                 // ]),
+            ])
+            ->headerActions([     
+                Tables\Actions\Action::make('Generate')
+                ->form([
+                    Forms\Components\Placeholder::make('summary')
+                    ->label('Summary')
+                    ->content(function (): string {
+                        return "Hello!";
+                    }),
+                    Forms\Components\Toggle::make('include_low_stock')
+                    ->label('Include Low Stock')  
+                ])
             ]);
+            
     }
 
     public static function getRelations(): array
