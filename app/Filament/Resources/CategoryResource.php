@@ -27,12 +27,12 @@ class CategoryResource extends Resource
                 ->description('Create a new category')
                 ->schema([
                     Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->columnSpanFull(),
-                    Forms\Components\TextArea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                ]),
+                    ->required(),
+                    Forms\Components\TextInput::make('description')
+                    ->label('Description (optional)')
+                    ->maxLength(255)
+                    ->required(),
+                ])->columns(2),
             ]);
     }
 
